@@ -1,0 +1,60 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<header>
+    <h1>Home</h1>
+    <li>
+        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}">
+        <select name="language">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}{% for language in languages %}
+        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
+        selected{% endif %}>
+            {{ language.name_local }} ({{ language.code }})
+        </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Go">
+        </form>
+        </li>
+    <hr>
+</header>
+<body>
+    <div>
+        {% for i in shoes_list %}
+            <h1>{{ i.name }}</h1>
+            <img src="{{ i.img.url }}" width="200px" alt="">
+            <h5>{{ i.price }}</h5>
+            <br>
+            <br>
+            <p>{{ i.about }}</p>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                <p>
+                    <button name="id" value="{{ i.id }}" type="submit">Delete</button>
+                </p>
+                <p>
+                    <input type="number" name="change_price" id="">
+                    <button type="submit" name="id_price" value="{{ i.id }}">Change Price</button>
+                </p>
+                <p>
+                    <input type="file" name="change_image" id="">
+                    <button type="submit" name="id_image" value="{{ i.id }}">Change Image</button>
+                </p>
+
+            </form>
+            <hr>
+        {% endfor %}
+
+    </div>
+</body>
+</html>
